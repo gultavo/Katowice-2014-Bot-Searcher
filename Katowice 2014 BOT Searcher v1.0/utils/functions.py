@@ -14,7 +14,7 @@ request = requests.get(economyapi)
 response = request.json()
 low = float(response['USDBRL']['high'])
 
-cartridge = 'https://steamcommunity.com/market/search?descriptions=1&category_730_ItemSet%5B%5D=any&category_730_Weapon%5B%5D=any&category_730_Quality%5B%5D=&q=%22Katowice+2014%22#p4_price_asc'
+cartridge = 'https://steamcommunity.com/market/search?descriptions=1&category_730_ItemSet%5B%5D=any&category_730_Weapon%5B%5D=any&category_730_Quality%5B%5D=&q=%22Katowice+2014%22#p3_price_asc'
 
 # FAZ AS CONTAS DO PREÇO (CONVERSÃO) E É A FUNÇÃO PRINCIPAL
 def get_price(chrome, xpath):
@@ -72,6 +72,7 @@ def main(seid, find):
 def content(chrome, find):
     global content_1, content_2, check_content_var
     check_content_var = None
+    url = chrome.current_url
     while True:
         try:
             name = find(By.XPATH, '//*[@id="largeiteminfo_item_name"]').text
@@ -89,7 +90,9 @@ Skin: {name}
 **{stickers}**
 Price: $ {price}
 Preço: R$ {real}
-\n''')
+{url}
+
+''')
                     print(content_1)
                     check_content_var = True
                     break
@@ -100,7 +103,9 @@ Skin: {name}
 **{stickers}**
 Price: $ {price}
 Preço: R$ {real}
-\n''')
+{url}
+
+''')
                     print(content_2)
                     check_content_var = False
                     break
