@@ -27,6 +27,7 @@ class Reloader(commands.Cog):
                 break
             elif autofind_ver == 'True':
                 await ctx.send('Autofinder is activated, no reason for reloading.')
+                break
             jsonreloader('True', None)
             await ctx.send('Wait... Verifying')
             c_array = []
