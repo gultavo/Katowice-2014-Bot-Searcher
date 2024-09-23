@@ -1,3 +1,5 @@
-from utils.func_loader import skins_module
+import asyncio
+from utils.functions import skins_module
 from run import chrome, find
-skins_module(chrome, find)
+asyncio.run(skins_module(chrome, find))
+from utils.bot import *
