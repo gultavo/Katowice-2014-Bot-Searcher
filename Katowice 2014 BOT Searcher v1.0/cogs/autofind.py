@@ -1,7 +1,7 @@
 from discord.ext import commands
 import json
 import asyncio
-from utils.functions import autofinder, jsonregister
+from utils.functions import autofinder, jsonregister, cartridge
 from run import chrome, find
 class Autofinder(commands.Cog):
     def __init__(self, bot):
@@ -33,6 +33,8 @@ class Autofinder(commands.Cog):
                     jsonlen = len(jsoncontent)
                     if jsonlen > 30:
                         await ctx.send(jsoncontent)
+                        jsonregister('False', 'False')
+                        chrome.get(cartridge)
                         return
                     continue
                 else: 
