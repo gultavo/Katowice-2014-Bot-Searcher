@@ -2,24 +2,21 @@
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 import json
+import asyncio
 from time import sleep
 import requests
 import locale
-from datetime import datetime
-current_time = datetime.now().strftime("%H:%M:%S")
-
 locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 economyapi = 'https://economia.awesomeapi.com.br/json/last/USD-BRL'
 request = requests.get(economyapi)
 response = request.json()
 low = float(response['USDBRL']['high'])
-
-cartridge = 'https://steamcommunity.com/market/search?descriptions=1&category_730_ItemSet%5B%5D=any&category_730_Weapon%5B%5D=any&category_730_Quality%5B%5D=&q=%22Katowice+2014%22#p3_price_asc'
+cartridge = 'https://steamcommunity.com/market/search?descriptions=1&category_730_ItemSet%5B%5D=any&category_730_Weapon%5B%5D=zany&category_730_Quality%5B%5D=&q=%22Katowice+2014%22#p3_price_asc'
 
 # FAZ AS CONTAS DO PREÇO (CONVERSÃO) E É A FUNÇÃO PRINCIPAL
-def get_price(chrome, xpath):
+async def get_price(chrome, xpath):
     global price, real
-    sleep(4.0)
+    await asyncio.sleep(4.0)
     while True:
         try:
             find = chrome.find_element
@@ -30,18 +27,26 @@ def get_price(chrome, xpath):
             return real, price
         except NoSuchElementException:
             chrome.refresh()
-            sleep(6.0)
+            await asyncio.sleep(6.0)
 
-def check_names(chrome, find, seid):
-    while True:
-        try:
-            check = find(By. ID, seid).text
-            return check
-        except NoSuchElementException:
-            chrome.refresh()
-            sleep(6.0)
+async def check_names(chrome, find):
+    global c_array
+    for num in range(0, 10):
+        stop_loop = False
+        while stop_loop != True:
+            try:
+                check = find(By. ID, f'result_{num}_name').text
+                print(num)
+                c_array.append(check)
+                stop_loop = True
+            except NameError:
+                c_array = []
+                stop_loop = False
+            except NoSuchElementException:
+                chrome.refresh()
+                await asyncio.sleep(6.0)
 
-def pre_security(chrome, find, seid):
+async def pre_security(chrome, find, seid):
     global security_ver
     security_ver = None
     sticker_steam = 'Sticker' or 'Adesivo'
@@ -60,14 +65,11 @@ def pre_security(chrome, find, seid):
             break
         except NoSuchElementException:
             chrome.refresh()
-            sleep(5.0)
+            await asyncio.sleep(5.0)
 
 
 def main(seid, find):
     find(By.ID, seid).click()
-
-
-# IMPRIME O CONTEÚDO DA PÁGINA (QUE PRECISA)
 
 def content(chrome, find):
     global content_1, content_2, check_content_var
@@ -115,9 +117,6 @@ Preço: R$ {real}
             sleep(6.0)
             chrome.refresh()
 
-
-# VERIFICA SE O SITE FOI CARREGADO CORRETAMENTE
-
 def site(find, chrome):
     stop_loop = None
     while stop_loop != True:
@@ -130,18 +129,16 @@ def site(find, chrome):
             sleep(6.0)
             stop_loop = False
 
-# FUNÇÃO DE SEGURANÇA CASO O ITEM FOR OUTRA COISA QUE NÃO QUER
-
-def security(chrome, find):
+async def security(chrome, find):
     global security_ver
     while True:
         try:
             namerror = find(By.CLASS_NAME, 'hover_item_name').text
-            if (len(namerror) != 0):
+            if len(namerror) != 0:
                 try:
                     stickers = find(By.XPATH, '//*[@id="sticker_info"]/center').text
                     katowice = 'Katowice 2014'
-                    sleep(2.0)
+                    await asyncio.sleep(2.0)
                     if katowice not in stickers:
                         print('\033[1;31mNAME TAG DETECTED\033[m')
                         security_ver = True
@@ -152,61 +149,110 @@ def security(chrome, find):
                     return security_ver
             else:
                 chrome.refresh()
-                sleep(3.0)
+                await asyncio.sleep(3.0)
         except NoSuchElementException:
             chrome.refresh()
-            sleep(4.0)
+            await asyncio.sleep(4.0)
 
-def load(chrome, find, xpath, seid):
-    pre_security(chrome, find, seid)
-    if security_ver == True:
-        return ''
-    else:
-        get_price(chrome, xpath)
-        main(seid, find)
-        security(chrome, find)
-        if security_ver == True:
-            chrome.get(cartridge)
-            return ''
-        else:
-            content(chrome, find)
-            if check_content_var == True:
-                return content_1
-            elif check_content_var == False:
-                return content_2
+async def autofinder(chrome, find):
+    while True:
+        await name_verifier(chrome, find)
+        jsonload = json.load(open('varContent.json'))
+        jsonverifier = jsonload['verifier']
+        jsonname = jsonload['skins_name']
+        jsonregist = json.load(open('autofindRegist.json'))['cancel']
+        if len(jsonload) < 30:
+            if jsonregist == 'True':
+                break
+            elif jsonname == jsonverifier:
+                await asyncio.sleep(15.0)
+                continue
+            else:
+                while len(json.load(open('varContent.json'))['content']) < 30:
+                    await skins_module(chrome, find)
+                    break
+                else: break
+        return
 
-def name_verifier(chrome, find):
-    global names
+async def load(chrome, find, xpath, seid):
+    global l_array
+    stop_loop = None
+    await pre_security(chrome, find, seid)
+    while stop_loop != True:
+            if security_ver == True:
+                try:
+                    l_array.append('')
+                    return
+                except NameError:
+                    l_array = []
+            else:
+                await get_price(chrome, xpath)
+                main(seid, find)
+                await security(chrome, find)
+                while stop_loop != True:
+                    try:
+                        if security_ver == True:
+                            chrome.get(cartridge)
+                            l_array.append('')
+                            return
+                    except NameError:
+                        l_array = []
+                        stop_loop = False
+                    else:              
+                        content(chrome, find)
+                        while stop_loop != True:
+                            try:
+                                if check_content_var == True:
+                                    l_array.append(content_1)
+                                    return
+                                elif check_content_var == False:
+                                    l_array.append(content_2)
+                                    return
+                            except NameError:
+                                l_array = []
+                                stop_loop = False
+            
+
+async def name_verifier(chrome, find):
+    global names, reload_names
     chrome.refresh()
+    await asyncio.sleep(3.0)
     names = []
+    reload_names = []
     while True:
         try:
             find(By. ID, 'result_3_name')
             break
         except NoSuchElementException:
             chrome.refresh()
-            sleep(6.0)
-    for num in range(1, 9):
+            await asyncio.sleep(7.0)
+    for num in range(0, 10):
         try:
             namecontrol = find(By. ID, f'result_{num}_name').text
             names.append(namecontrol)
+            reload_names.append(namecontrol)
         except NoSuchElementException:
             chrome.refresh()
-            sleep(6.0)
+            await asyncio.sleep(6.0)
+    if json.load(open('reloaderRegist.json'))['reloader'] == 'True':
+        jsonreloader('True', reload_names)
+        reload_names = None
     jsonloader()
     
-def returner(l_str, c_array):
-    global skin, ver_name, names
+async def returner(chrome, find, l_str):
+    global skin, ver_name, names, l_array, c_array
+    await check_names(chrome, find)
     skin = None
     names = None
     skin = l_str
     ver_name = c_array
+    c_array = []
+    l_array = []
     return skin
 
 def jsonloader():
     dictionary = {
         'content': skin,
-        'time': current_time,
         'verifier': ver_name,
         'skins_name': names
     }
@@ -214,3 +260,31 @@ def jsonloader():
     data = json.dumps(dictionary, indent=1)
     with open('varContent.json', 'w') as f:
         f.write(data)
+
+def jsonregister(value, cancel):
+    regist = {
+        'register': value,
+        'cancel': cancel
+    }
+    with open('autofindRegist.json', 'w') as f:
+        f.write(json.dumps(regist, indent=1))
+
+def jsonreloader(reload_ver, reload_names):
+    reload = {
+        'reloader': reload_ver,
+        'skins_name': reload_names
+    }
+    with open('reloaderRegist.json', 'w') as f:
+        f.write(json.dumps(reload, indent=1))
+
+
+async def skins_module(chrome, find):
+    for x in range(0, 10):
+        jsonregist = json.load(open('autofindRegist.json'))['cancel']
+        if jsonregist == 'True':
+            break
+        await load(chrome, find, f'//*[@id="result_{x}"]/div[1]/div[2]/span[1]/span[1]', f'result_{x}_name')
+        chrome.get(cartridge)
+    l_str = ''.join(map(str, l_array))
+    await returner(chrome, find, l_str)
+    jsonloader()
