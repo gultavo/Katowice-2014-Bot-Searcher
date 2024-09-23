@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import asyncio
-discord_token = 'MTI0NjQ1NjU2NjgyNDMwODg1OA.GDlA2t.xH5J28PWYmyh17j9cYw_90lPV0jMebiSWcyO2w'
+discord_token = ''
 intents = discord.Intents.all()
 intents.message_content = True
 client = commands.Bot(command_prefix='.', intents=intents)
