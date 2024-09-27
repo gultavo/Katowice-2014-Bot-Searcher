@@ -5,7 +5,7 @@ are some features that'll be introduced in the next few months or weeks, and the
 
 All Rights Reserved
 
-Copyright (c) ${project.inceptionYear} ${owner}
+Copyright (c) 2024 gultavo
 
 Created by gultavo
 
