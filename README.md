@@ -8,7 +8,7 @@ It can run as a skin miner, there is a command called autofind that'll find the 
 run as a Discord bot integrated to your Discord Server!
 
 ## Installation
-A site is being prepared to be more simple and easier to install it, by now access https://discord.com/oauth2/authorize?client_id=1246456566824308858 to install.
+A website is being prepared to be more simple and easier to install it, by now access https://discord.com/oauth2/authorize?client_id=1246456566824308858 to install.
 
 
 
