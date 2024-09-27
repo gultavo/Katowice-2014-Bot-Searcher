@@ -1,7 +1,17 @@
-﻿This project is a Katowice 2014 BOT Searcher, it is made by gultavo using some json features and the Python Programming Language, the main framework that was used was Selenium and WebDriver Manager, 
-to make the BOT ran was used the Discord Framework, there's no Al code there, this project was made by hand and browsing the problems on Stack Overflow or another sites. This project is useful because 
-it can run as a skin miner, there is a command called autofind that will find a cheap skin with Katowice 2014 Sticker on it, you need to have lucky, but it'll find. This project is not finished yet, there 
-are some features that'll be introduced in the next few months or weeks, and the main thing, the site to add this bot to your Discord Server.
+# Katowice 2014 Bot Searcher
+
+## Purpose
+Find cheap skins with rare Katowice 2014 stickers.
+
+## Utility
+It can run as a skin miner, there is a command called autofind that'll find the skins automatically, or it can simply
+run as a Discord bot integrated to your Discord Server!
+
+## Installation
+A site is being prepared to be more simple and easier to install it, by now access https://discord.com/oauth2/authorize?client_id=1246456566824308858 to install.
+
+
+
 
 All Rights Reserved
 
