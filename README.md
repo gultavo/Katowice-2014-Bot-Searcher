@@ -1,7 +1,7 @@
 # Katowice 2014 Bot Searcher
 
 ## Purpose
-Find cheap skins with rare Katowice 2014 stickers.
+Find cheap skins with rare Katowice 2014 stickers
 
 ## Utility
 It can run as a skin miner, there is a command called autofind that'll find the skins automatically, or it can simply
