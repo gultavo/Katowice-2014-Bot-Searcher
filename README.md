@@ -5,13 +5,10 @@ Find cheap skins with rare Katowice 2014 stickers.
 
 ## Utility
 It can run as a skin miner, there is a command called autofind that'll find the skins automatically, or it can simply
-run as a Discord bot integrated to your Discord Server!
+run as a Discord bot integrated to your Discord Server! (Bot offline at the moment).
 
 ## Installation
 A website is being prepared to be more simple and easier to install it, by now access https://discord.com/oauth2/authorize?client_id=1246456566824308858 to install.
-
-
-
 
 All Rights Reserved
 
