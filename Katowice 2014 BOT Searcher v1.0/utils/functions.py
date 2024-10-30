@@ -31,7 +31,7 @@ async def get_price(chrome, xpath):
 
 async def check_names(chrome, find):
     global c_array
-    for num in range(0, 10):
+    for num in range(4, 6):
         stop_loop = False
         while stop_loop != True:
             try:
@@ -157,10 +157,10 @@ async def security(chrome, find):
 async def autofinder(chrome, find):
     while True:
         await name_verifier(chrome, find)
-        jsonload = json.load(open('varContent.json'))
+        jsonload = json.load(open('./json/varContent.json'))
         jsonverifier = jsonload['verifier']
         jsonname = jsonload['skins_name']
-        jsonregist = json.load(open('autofindRegist.json'))['cancel']
+        jsonregist = json.load(open('./json/autofindRegist.json'))['cancel']
         if len(jsonload) < 30:
             if jsonregist == 'True':
                 break
@@ -168,7 +168,7 @@ async def autofinder(chrome, find):
                 await asyncio.sleep(15.0)
                 continue
             else:
-                while len(json.load(open('varContent.json'))['content']) < 30:
+                while len(json.load(open('./json/varContent.json'))['content']) < 30:
                     await skins_module(chrome, find)
                     break
                 else: break
@@ -226,7 +226,7 @@ async def name_verifier(chrome, find):
         except NoSuchElementException:
             chrome.refresh()
             await asyncio.sleep(7.0)
-    for num in range(0, 10):
+    for num in range(4, 6):
         try:
             namecontrol = find(By. ID, f'result_{num}_name').text
             names.append(namecontrol)
@@ -234,7 +234,7 @@ async def name_verifier(chrome, find):
         except NoSuchElementException:
             chrome.refresh()
             await asyncio.sleep(6.0)
-    if json.load(open('reloaderRegist.json'))['reloader'] == 'True':
+    if json.load(open('./json/reloaderRegist.json'))['reloader'] == 'True':
         jsonreloader('True', reload_names)
         reload_names = None
     jsonloader()
@@ -279,10 +279,10 @@ def jsonreloader(reload_ver, reload_names):
 
 
 async def skins_module(chrome, find):
-    for x in range(0, 10):
-        jsonregist = json.load(open('autofindRegist.json'))['cancel']
+    for x in range(4, 6):
+        jsonregist = json.load(open('./json/autofindRegist.json'))['cancel']
         if jsonregist == 'True':
-            break
+            break 
         await load(chrome, find, f'//*[@id="result_{x}"]/div[1]/div[2]/span[1]/span[1]', f'result_{x}_name')
         chrome.get(cartridge)
     l_str = ''.join(map(str, l_array))
