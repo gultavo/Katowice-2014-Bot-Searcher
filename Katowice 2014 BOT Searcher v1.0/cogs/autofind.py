@@ -11,17 +11,17 @@ class Autofinder(commands.Cog):
     @commands.command()
     async def autofind(self, ctx):
         while True:
-            if json.load(open('autofindRegist.json'))['register'] == 'True':
-                await ctx.send('Autofinder is already activated')
+            if json.load(open('./json/autofindRegist.json'))['register'] == 'True':
+                await ctx.send('./json/Autofinder is already activated')
                 break
-            elif json.load(open('autofindRegist.json'))['cancel'] == 'True':
+            elif json.load(open('./json/autofindRegist.json'))['cancel'] == 'True':
                 jsonregister('False', 'False')
                 break
             await ctx.send('Autofinder activated, when the bot finds a skin he will return it through discord. Remember, to stop the automatic search just send .stop')
             jsonregister('True', 'False')
             while True:
-                jsoncontent = json.load(open('varContent.json'))['content']
-                jsoncancel = json.load(open('autofindRegist.json'))['cancel']
+                jsoncontent = json.load(open('./json/varContent.json'))['content']
+                jsoncancel = json.load(open('./json/autofindRegist.json'))['cancel']
                 jsonlen =  len(jsoncontent)
                 if jsonlen < 30:
                     if jsoncancel == 'True':
@@ -29,7 +29,7 @@ class Autofinder(commands.Cog):
                         break
                     autofind = asyncio.create_task(autofinder(chrome, find))
                     await autofind
-                    jsoncontent = json.load(open('varContent.json'))['content']
+                    jsoncontent = json.load(open('./json/varContent.json'))['content']
                     jsonlen = len(jsoncontent)
                     if jsonlen > 30:
                         await ctx.send(jsoncontent)
