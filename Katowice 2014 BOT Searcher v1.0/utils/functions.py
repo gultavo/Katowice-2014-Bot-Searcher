@@ -31,7 +31,7 @@ async def get_price(chrome, xpath):
 
 async def check_names(chrome, find):
     global c_array
-    for num in range(4, 6):
+    for num in range(0, 10):
         stop_loop = False
         while stop_loop != True:
             try:
@@ -226,7 +226,7 @@ async def name_verifier(chrome, find):
         except NoSuchElementException:
             chrome.refresh()
             await asyncio.sleep(7.0)
-    for num in range(4, 6):
+    for num in range(0, 10):
         try:
             namecontrol = find(By. ID, f'result_{num}_name').text
             names.append(namecontrol)
@@ -279,7 +279,7 @@ def jsonreloader(reload_ver, reload_names):
 
 
 async def skins_module(chrome, find):
-    for x in range(4, 6):
+    for x in range(0, 10):
         jsonregist = json.load(open('./json/autofindRegist.json'))['cancel']
         if jsonregist == 'True':
             break 
