@@ -8,7 +8,7 @@ class Stop(commands.Cog):
 
     @commands.command()
     async def stop(self, ctx):
-        regist = json.load(open('autofindRegist.json'))
+        regist = json.load(open('./json/autofindRegist.json'))
         register = regist['register']
         if register == 'True':
             await ctx.send('Stopping autofinder...')
