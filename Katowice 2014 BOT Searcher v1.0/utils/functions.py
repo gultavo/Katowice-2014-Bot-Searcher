@@ -258,7 +258,7 @@ def jsonloader():
     }
 
     data = json.dumps(dictionary, indent=1)
-    with open('./json/varContent.json', 'w') as f:
+    with open('.json/varContent.json', 'w') as f:
         f.write(data)
 
 def jsonregister(value, cancel):
