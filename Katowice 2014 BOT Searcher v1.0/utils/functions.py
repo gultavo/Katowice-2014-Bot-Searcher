@@ -258,7 +258,7 @@ def jsonloader():
     }
 
     data = json.dumps(dictionary, indent=1)
-    with open('varContent.json', 'w') as f:
+    with open('./json/varContent.json', 'w') as f:
         f.write(data)
 
 def jsonregister(value, cancel):
@@ -266,7 +266,7 @@ def jsonregister(value, cancel):
         'register': value,
         'cancel': cancel
     }
-    with open('autofindRegist.json', 'w') as f:
+    with open('./json/autofindRegist.json', 'w') as f:
         f.write(json.dumps(regist, indent=1))
 
 def jsonreloader(reload_ver, reload_names):
@@ -274,7 +274,7 @@ def jsonreloader(reload_ver, reload_names):
         'reloader': reload_ver,
         'skins_name': reload_names
     }
-    with open('reloaderRegist.json', 'w') as f:
+    with open('./json/reloaderRegist.json', 'w') as f:
         f.write(json.dumps(reload, indent=1))
 
 
