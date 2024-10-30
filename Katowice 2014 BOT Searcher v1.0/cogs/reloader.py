@@ -6,7 +6,7 @@ from utils.functions import name_verifier, skins_module, cartridge
 import json
 import asyncio
 options = webdriver.ChromeOptions()
-# options.add_argument('headless')
+options.add_argument('headless')
 chrome_re = webdriver.Chrome(options=options)
 find_re = chrome_re.find_element
 chrome_re.get(cartridge)
@@ -19,8 +19,8 @@ class Reloader(commands.Cog):
     @commands.command()
     async def reload(self, ctx):
         global c_array
-        reload_ver = json.load(open('reloaderRegist.json'))['reloader']
-        autofind_ver = json.load(open('autofindRegist.json'))['register']
+        reload_ver = json.load(open('./json/reloaderRegist.json'))['reloader']
+        autofind_ver = json.load(open('./json/autofindRegist.json'))['register']
         while True:
             if reload_ver == 'True':
                 await ctx.send('Verifier is already activated')
@@ -33,9 +33,9 @@ class Reloader(commands.Cog):
             c_array = []
             verifier = asyncio.create_task(name_verifier(chrome_re, find_re))
             await verifier
-            json_cogname = json.load(open('varContent.json'))
+            json_cogname = json.load(open('./json/varContent.json'))
             cogjsoname = json_cogname['verifier']
-            reloadjsonskins = json.load(open('reloaderRegist.json'))['skins_name']
+            reloadjsonskins = json.load(open('./json/reloaderRegist.json'))['skins_name']
             if cogjsoname == reloadjsonskins:
                 await ctx.send('Same skins')
                 jsonreloader('False', None)
@@ -43,7 +43,7 @@ class Reloader(commands.Cog):
             else:
                 await ctx.send('Reloading... This may take a few minutes')
                 await skins_module(chrome_re, find_re)
-                json_cogname = json.load(open('varContent.json'))
+                json_cogname = json.load(open('./json/varContent.json'))
                 content = json_cogname['content']
                 if len(content) > 30:
                     await ctx.send(content)
